@@ -11,21 +11,32 @@ import com.example.username.hakatonindoorway.R;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * Created by Lukasz on 2018-01-13.
  */
 
-public class CourseListAdapter extends RecyclerView.Adapter<CourseListAdapter.ViewHolder> {
+public class CourseListAdapter extends RecyclerView.Adapter<CourseListAdapter.ViewHolder>{
 
-    List<CourseDto> courses = new ArrayList<>();
+    private Date currentDate;
+    private Map<Date, List<CourseDto>> courses = new HashMap<>();
 
-    public void refresh(List<CourseDto> courses) {
+    public void setDate(Date currentDate) {
+        this.currentDate = currentDate;
+        notifyDataSetChanged();
+    }
+
+    public void refresh(List<DayCoursesDto> courses) {
         this.courses.clear();
         if(courses != null)
-            this.courses.addAll(courses);
+            for(DayCoursesDto dto : courses) {
+                this.courses.put(dto.getDate(), new ArrayList<>(dto.getEvents()));
+            }
         notifyDataSetChanged();
     }
 
@@ -38,12 +49,14 @@ public class CourseListAdapter extends RecyclerView.Adapter<CourseListAdapter.Vi
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.bind(courses.get(position));
+        holder.bind(courses.get(currentDate).get(position));
     }
 
     @Override
     public int getItemCount() {
-        return courses.size();
+        if(courses.isEmpty() || currentDate == null)
+            return 0;
+        return courses.get(currentDate).size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

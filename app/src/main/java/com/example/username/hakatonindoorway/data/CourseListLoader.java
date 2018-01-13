@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.AsyncTaskLoader;
-import android.support.v4.content.Loader;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -22,8 +21,8 @@ import java.util.Scanner;
  * Created by Lukasz on 2018-01-13.
  */
 
-public class CourseListLoader extends AsyncTaskLoader<List<CourseDto>> {
-    private List<CourseDto> courses;
+public class CourseListLoader extends AsyncTaskLoader<List<DayCoursesDto>> {
+    private List<DayCoursesDto> courses;
 
     /**
      * Stores away the application context associated with context.
@@ -47,17 +46,17 @@ public class CourseListLoader extends AsyncTaskLoader<List<CourseDto>> {
 
     @Nullable
     @Override
-    public List<CourseDto> loadInBackground() {
+    public List<DayCoursesDto> loadInBackground() {
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd kk:mm").create();
         HttpURLConnection conn = null;
         try {
-            conn = (HttpURLConnection)new URL("http://51.15.78.247:8888/api/mock/events/today").openConnection();
+            conn = (HttpURLConnection)new URL("http://51.15.78.247:8888/api/mock/events/currentPeriod").openConnection();
             InputStream is = conn.getInputStream();
             Scanner sc = new Scanner(is);
             sc.useDelimiter("\\A");
             String response = sc.next();
-            courses = gson.fromJson(response, new TypeToken<List<CourseDto>>(){}.getType());
+            courses = gson.fromJson(response, new TypeToken<List<DayCoursesDto>>(){}.getType());
             return courses;
         } catch (MalformedURLException e) {
             e.printStackTrace();
