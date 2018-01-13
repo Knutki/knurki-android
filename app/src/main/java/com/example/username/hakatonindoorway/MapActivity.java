@@ -1,8 +1,10 @@
 package com.example.username.hakatonindoorway;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
 import com.indoorway.android.fragments.sdk.map.IndoorwayMapFragment;
 import com.indoorway.android.fragments.sdk.map.MapFragment;
@@ -31,5 +33,9 @@ public class MapActivity extends AppCompatActivity implements IndoorwayMapFragme
     @Override
     public void onMapFragmentReady(MapFragment mapFragment) {
         mapFragment.getMapView().load("CScrSxCVhQg", "3-_M01M3r5w");
+    }
+
+    public void onShowCoursesClick(View view) {
+        startActivity(new Intent(this, PlanActivity.class));
     }
 }

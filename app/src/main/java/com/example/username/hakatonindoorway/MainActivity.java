@@ -18,6 +18,6 @@ public class MainActivity extends AppCompatActivity {
         IndoorwaySdk.initContext(this);
         IndoorwaySdk.configure("babd13d7-abf9-4151-a965-3bffa2e0679b");
 
-        startActivity(new Intent(this, MapActivity.class));
+        startActivity(new Intent(this, PlanActivity.class));
     }
 }
