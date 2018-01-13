@@ -3,10 +3,12 @@ package com.example.username.hakatonindoorway;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.Vibrator;
 import android.support.annotation.NonNull;
 
 import android.app.Activity;
@@ -23,6 +25,7 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -47,7 +50,11 @@ public class LoginActivity extends AppCompatActivity {
     Runnable startVoiceMode = new Runnable() {
         @Override
         public void run() {
-            startActivity(new Intent(LoginActivity.this, NullActivity.class);
+            Log.d("DEBUG", "starting");
+            Vibrator v = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
+            v.vibrate(500);
+            finish();
+            startActivity(new Intent(LoginActivity.this, NullActivity.class));
         }
     };
 
@@ -60,11 +67,17 @@ public class LoginActivity extends AppCompatActivity {
         findViewById(R.id.root).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                if(motionEvent.)
-                handler.postAtTime(startVoiceMode, 3000);
+//                Log.d("DEBUG", "action:"+motionEvent.getAction());
+                if(motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    Log.d("DEBUG", "start");
+                    handler.postDelayed(startVoiceMode, 2000);
+                } else if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    Log.d("DEBUG", "no start");
+                    handler.removeCallbacks(startVoiceMode);
+                }
                 return true;
             }
-        })
+        });
     }
 
 

@@ -53,7 +53,7 @@ public class MapActivity extends AppCompatActivity implements IndoorwayMapFragme
 
     public void onLocationReady(){
         String room = "107";
-        if(getIntent() != null)
+        if(getIntent() != null && getIntent().hasExtra(EXTRA_ROOM_NUMBER))
             room = getIntent().getStringExtra(EXTRA_ROOM_NUMBER);
         navigatorManager.navigateTo(room, BuildingObject.ROOM);
     }
