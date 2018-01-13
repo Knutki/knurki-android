@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import com.indoorway.android.common.sdk.IndoorwaySdk;
 
 
-
 public class MainActivity extends AppCompatActivity {
 
     @Override
