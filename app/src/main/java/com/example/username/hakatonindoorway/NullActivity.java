@@ -72,7 +72,7 @@ public class NullActivity extends AppCompatActivity implements TextToSpeech.OnIn
                                     speaker.speak(DATE_FORMAT.format(courses.get(dayPosition).getDate()),
                                             TextToSpeech.QUEUE_ADD, null, "_");
                                 } else {
-                                    speaker.speak("prowadzę", TextToSpeech.QUEUE_ADD, null, "super");
+                                    speaker.speak(getString(R.string.guide), TextToSpeech.QUEUE_ADD, null, "super");
                                 }
                             }
                         }
@@ -90,13 +90,13 @@ public class NullActivity extends AppCompatActivity implements TextToSpeech.OnIn
                             if(optionSelected && !"nextDay".equals(s))
                                 return;
                             if("hello".equals(s) || ("nextDay".equals(s) && !optionSelected))
-                                speaker.speak("menu", TextToSpeech.QUEUE_ADD, null, "menu");
+                                speaker.speak(getString(R.string.menu), TextToSpeech.QUEUE_ADD, null, "menu");
                             if(!"readList".equals(s) && !(optionSelected && "nextDay".equals(s)))
                                 return;
                             ++eventPosition;
                             if(eventPosition == courses.get(dayPosition).getEvents().size()) {
                                 if(dayPosition == courses.size())
-                                    speaker.speak("menu", TextToSpeech.QUEUE_ADD, null, "menu");
+                                    speaker.speak(getString(R.string.menu), TextToSpeech.QUEUE_ADD, null, "menu");
                                 speaker.speak(getString(R.string.next_day), TextToSpeech.QUEUE_ADD, null, "nextDay");
                                 return;
                             }
@@ -120,6 +120,10 @@ public class NullActivity extends AppCompatActivity implements TextToSpeech.OnIn
                             return true;
                         }
                     });
+                }
+
+                if ("super".equals(s)) {
+                    speaker.speak(getString(R.string.menu), TextToSpeech.QUEUE_ADD, null, "menu");
                 }
             }
 
@@ -149,7 +153,7 @@ public class NullActivity extends AppCompatActivity implements TextToSpeech.OnIn
         if(dayPosition < data.size()) {
             CourseDto course = courses.get(dayPosition).getEvents().get(eventPosition);
             long diff = (course.getStartTime().getTime()  - System.currentTimeMillis()) / (60*1000);
-            String msg = course.getName()+" za "+diff+" minut w sali "+course.getRoom();
+            String msg = getString(R.string.course_info1, course.getName(), diff, course.getRoom());
             speaker.speak(msg, TextToSpeech.QUEUE_ADD, null, "hello");
         }
     }
@@ -168,8 +172,8 @@ public class NullActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
     public String formatMessage(CourseDto course) {
-        String msg = TIME_FORMAT.format(course.getStartTime())+", "+course.getName()+", sala "+course.getRoom();
-        Log.d("NullActivity", msg);
+        String msg = getString(R.string.course_info2, TIME_FORMAT.format(course.getStartTime()),
+                course.getName(), course.getRoom());
         return msg;
     }
 }

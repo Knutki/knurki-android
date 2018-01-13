@@ -12,4 +12,8 @@
     <string name="action_sign_in">Zaloguj przez USOS</string>
 
     <string name="next_day">Następny dzień?</string>
+    <string name="menu">menu</string>
+    <string name="course_info1">%1$s za %2$d minut, sala %3$s</string>
+    <string name="course_info2">Godzina %1$s, %2$s, sala %3$s</string>
+    <string name="guide">prowadzę</string>
 </resources>
