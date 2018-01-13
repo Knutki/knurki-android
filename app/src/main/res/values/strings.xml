@@ -10,4 +10,6 @@
 
     <!-- Strings related to login -->
     <string name="action_sign_in">Zaloguj przez USOS</string>
+
+    <string name="next_day">Następny dzień?</string>
 </resources>

@@ -31,10 +31,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
+import android.webkit.WebView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -58,6 +60,9 @@ public class LoginActivity extends AppCompatActivity {
         }
     };
 
+    private LinearLayout llHello;
+    private WebView wvLogin;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,21 +72,23 @@ public class LoginActivity extends AppCompatActivity {
         findViewById(R.id.root).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-//                Log.d("DEBUG", "action:"+motionEvent.getAction());
                 if(motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                    Log.d("DEBUG", "start");
                     handler.postDelayed(startVoiceMode, 2000);
                 } else if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    Log.d("DEBUG", "no start");
                     handler.removeCallbacks(startVoiceMode);
                 }
                 return true;
             }
         });
+        llHello = findViewById(R.id.llHello);
+        wvLogin = findViewById(R.id.wvLogin);
     }
 
 
     public void singWithUsos(View view) {
+        llHello.setVisibility(View.GONE);
+//        wvLogin.setVisibility(View.VISIBLE);
+//        wvLogin.loadUrl("http://51.15.78.247:8080/oauth/login");
         startActivity(new Intent(this, MapActivity.class));
     }
 }

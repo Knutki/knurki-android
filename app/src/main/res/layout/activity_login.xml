@@ -13,6 +13,7 @@
     tools:context="com.example.username.hakatonindoorway.LoginActivity">
 
     <LinearLayout
+        android:id="@+id/llHello"
         android:layout_gravity="center"
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -37,5 +38,11 @@
             android:layout_height="wrap_content"/>
 
     </LinearLayout>
+
+    <WebView
+        android:id="@+id/wvLogin"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </FrameLayout>
