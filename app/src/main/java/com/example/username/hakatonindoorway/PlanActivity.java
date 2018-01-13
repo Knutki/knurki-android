@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.example.username.hakatonindoorway.data.CourseDatesAdapter;
 import com.example.username.hakatonindoorway.data.CourseListAdapter;
@@ -75,5 +76,10 @@ public class PlanActivity extends AppCompatActivity implements LoaderManager.Loa
     public void onLoaderReset(Loader<List<DayCoursesDto>> loader) {
         adapter.refresh(null);
         datesAdapter.refresh(null);
+    }
+
+    public void closeTab(View planView) {
+        finish();
+        overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
     }
 }
