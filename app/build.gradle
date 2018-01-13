@@ -1,6 +1,9 @@
 apply plugin: 'com.android.application'
 
 android {
+    defaultConfig {
+        multiDexEnabled true
+    }
     compileSdkVersion 26
     defaultConfig {
         applicationId "com.example.username.hakatonindoorway"
@@ -32,4 +35,6 @@ dependencies {
 
     compile('com.indoorway.android:common:2.0.4')
     compile('com.indoorway.android:map:2.0.4')
+    compile('com.indoorway.android:location:2.0.4')
+    compile('com.indoorway.android:fragments:2.0.4')
 }
