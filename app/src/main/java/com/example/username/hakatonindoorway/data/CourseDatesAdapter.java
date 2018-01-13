@@ -62,9 +62,6 @@ public class CourseDatesAdapter extends PagerAdapter {
         LinearLayoutManager layoutManager = new LinearLayoutManager(ctx);
         rv.setLayoutManager(layoutManager);
         rv.setAdapter(adapter);
-        DividerItemDecoration did = new DividerItemDecoration(ctx, layoutManager.getOrientation());
-        did.setDrawable(ContextCompat.getDrawable(ctx, R.drawable.divider_course_list));
-        rv.addItemDecoration(did);
         adapter.setDate(dates.get(position));
         container.addView(rv);
         return rv;

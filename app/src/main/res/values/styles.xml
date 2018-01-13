@@ -4,5 +4,14 @@
     <style name="AppTheme" parent="@style/Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
     </style>
+    <style name="PagerTabStripText">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/colorDark</item>
+    </style>
+    <style name="Header">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/colorDark</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
 
 </resources>
