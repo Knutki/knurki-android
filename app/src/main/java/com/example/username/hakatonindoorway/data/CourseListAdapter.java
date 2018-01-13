@@ -1,11 +1,14 @@
 package com.example.username.hakatonindoorway.data;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.username.hakatonindoorway.MapActivity;
 import com.example.username.hakatonindoorway.R;
 
 import java.text.DateFormat;
@@ -61,24 +64,36 @@ public class CourseListAdapter extends RecyclerView.Adapter<CourseListAdapter.Vi
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
+        View root;
         TextView tvTime;
         TextView tvCourseName;
         TextView tvRoomNumber;
+        Context context;
 
         static final DateFormat DATE_FORMAT = new SimpleDateFormat("kk:mm", Locale.US);
 
         public ViewHolder(View itemView) {
             super(itemView);
 
+            context = itemView.getContext();
+            root = itemView;
             tvTime = itemView.findViewById(R.id.tvTime);
             tvCourseName = itemView.findViewById(R.id.tvCourseName);
             tvRoomNumber = itemView.findViewById(R.id.tvRoomNumber);
         }
 
-        public void bind(CourseDto course) {
+        public void bind(final CourseDto course) {
             tvCourseName.setText(course.getName());
             tvTime.setText(DATE_FORMAT.format(course.getStartTime()));
             tvRoomNumber.setText(course.getRoom());
+            root.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, MapActivity.class);
+                    intent.putExtra(MapActivity.EXTRA_ROOM_NUMBER, course.getRoom());
+                    context.startActivity(intent);
+                }
+            });
         }
     }
 }

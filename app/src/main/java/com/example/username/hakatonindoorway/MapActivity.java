@@ -16,6 +16,8 @@ import com.indoorway.android.location.sdk.IndoorwayLocationSdk;
 
 
 public class MapActivity extends AppCompatActivity implements IndoorwayMapFragment.OnMapFragmentReadyListener{
+    public static final String EXTRA_ROOM_NUMBER = "ROOM_NUMBER";
+
     public LocationListener locationListener;
     public BuildingManager buildingManager;
     public NavigatorManager navigatorManager;
@@ -50,10 +52,14 @@ public class MapActivity extends AppCompatActivity implements IndoorwayMapFragme
     }
 
     public void onLocationReady(){
-        navigatorManager.navigateTo("107", BuildingObject.ROOM);
+        String room = "107";
+        if(getIntent() != null)
+            room = getIntent().getStringExtra(EXTRA_ROOM_NUMBER);
+        navigatorManager.navigateTo(room, BuildingObject.ROOM);
     }
 
     public void onShowCoursesClick(View view) {
         startActivity(new Intent(this, PlanActivity.class));
+        overridePendingTransition(R.anim.slide_in_up, R.anim.slide_in_up);
     }
 }

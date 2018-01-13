@@ -51,7 +51,7 @@ public class CourseListLoader extends AsyncTaskLoader<List<DayCoursesDto>> {
                 .setDateFormat("yyyy-MM-dd kk:mm").create();
         HttpURLConnection conn = null;
         try {
-            conn = (HttpURLConnection)new URL("http://51.15.78.247:8888/api/mock/events/currentPeriod").openConnection();
+            conn = (HttpURLConnection)new URL("http://51.15.78.247:8080/api/mock/events/currentPeriod").openConnection();
             InputStream is = conn.getInputStream();
             Scanner sc = new Scanner(is);
             sc.useDelimiter("\\A");

@@ -36,7 +36,7 @@ public class LocationListener implements Action1<IndoorwayPosition> {
         // If you are using map view, you can pass position.
         // Second argument indicates if you want to auto reload map on position change
         // for eg. after going to different building level.
-        if (!this.mapView.currentMap().getMapUuid().equals(mapUuid))
+        if (this.mapView.currentMap() == null || !this.mapView.currentMap().getMapUuid().equals(mapUuid))
             this.mapView.load(buildingUuid, mapUuid);
         mapView.getPosition().setPosition(position, true);
     }

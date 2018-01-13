@@ -10,6 +10,9 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.example.username.hakatonindoorway.data.CourseDatesAdapter;
 import com.example.username.hakatonindoorway.data.CourseListAdapter;
@@ -36,6 +39,23 @@ public class PlanActivity extends AppCompatActivity implements LoaderManager.Loa
 
         setTitle("Twoje zajęcia");
         getSupportLoaderManager().initLoader(0, new Bundle(), this);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_plan, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.close:
+                finish();
+                break;
+        }
+        return true;
     }
 
     @Override
