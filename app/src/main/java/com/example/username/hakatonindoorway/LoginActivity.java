@@ -31,12 +31,19 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
+import android.webkit.CookieSyncManager;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.net.CookieHandler;
+import java.net.CookieManager;
+import java.net.CookiePolicy;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,13 +57,15 @@ public class LoginActivity extends AppCompatActivity {
     Runnable startVoiceMode = new Runnable() {
         @Override
         public void run() {
-            Log.d("DEBUG", "starting");
             Vibrator v = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
             v.vibrate(500);
             finish();
             startActivity(new Intent(LoginActivity.this, NullActivity.class));
         }
     };
+
+    private WebView wvLogin;
+    private LinearLayout llIntro;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,22 +76,33 @@ public class LoginActivity extends AppCompatActivity {
         findViewById(R.id.root).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-//                Log.d("DEBUG", "action:"+motionEvent.getAction());
                 if(motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                    Log.d("DEBUG", "start");
                     handler.postDelayed(startVoiceMode, 2000);
                 } else if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    Log.d("DEBUG", "no start");
                     handler.removeCallbacks(startVoiceMode);
                 }
                 return true;
             }
         });
+
+        llIntro = findViewById(R.id.llIntro);
+        wvLogin = findViewById(R.id.wvLogin);
     }
 
 
     public void singWithUsos(View view) {
-        startActivity(new Intent(this, MapActivity.class));
+        llIntro.setVisibility(View.GONE);
+        wvLogin.setVisibility(View.VISIBLE);
+        wvLogin.loadUrl("http://51.15.41.158:8080/oauth/login");
+        wvLogin.setWebViewClient(new WebViewClient() {
+            private int cnt = 0;
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                if("http://51.15.41.158:8080/api/usos/user".equals(url))
+                    startActivity(new Intent(LoginActivity.this, PlanActivity.class));
+            }
+        });
     }
 }
 
