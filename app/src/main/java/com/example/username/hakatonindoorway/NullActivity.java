@@ -1,5 +1,6 @@
 package com.example.username.hakatonindoorway;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
@@ -79,6 +80,22 @@ public class NullActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        if(state == State.GUIDE)
+            setState(State.MENU, false);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(speaker != null) {
+            speaker.stop();
+            speaker.shutdown();
+        }
+    }
+
+    @Override
     public void onInit(int status) {
         final Handler handler = new Handler();
         speaker.setOnUtteranceProgressListener(new UtteranceProgressListener() {
@@ -99,7 +116,7 @@ public class NullActivity extends AppCompatActivity implements TextToSpeech.OnIn
                                     eventPosition = 0;
                                     setState(State.READ_LIST, false);
                                 } else {
-                                    setState(State.GUIDE, false);
+                                    setState(State.GUIDE, true);
                                 }
                             }
                         }
@@ -142,6 +159,13 @@ public class NullActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 if ("super".equals(s)) {
                     setState(State.MENU, false);
                 }
+
+                if("!".equals(s)) {
+                    Intent intent = new Intent(NullActivity.this, MapActivity.class);
+                    intent.putExtra(MapActivity.EXTRA_ROOM_NUMBER, courses.get(dayPosition).getEvents().get(eventPosition).getRoom());
+                    startActivity(intent);
+                }
+
             }
 
             @Override
@@ -177,7 +201,7 @@ public class NullActivity extends AppCompatActivity implements TextToSpeech.OnIn
         } else if(state == State.NEXT_DAY) {
             speaker.speak(getString(R.string.next_day), queueMode, null, "nextDay");
         } else if(state == State.GUIDE) {
-            speaker.speak(getString(R.string.guide), queueMode, null, "super");
+            speaker.speak(getString(R.string.searching_safe_road), queueMode, null, "!");
         }
 
         this.state = state;
@@ -206,12 +230,14 @@ public class NullActivity extends AppCompatActivity implements TextToSpeech.OnIn
 
     @Override
     public Loader<List<DayCoursesDto>> onCreateLoader(int id, Bundle args) {
-        return new CourseListLoader(this);
+        return new CourseListLoader(this, true);
     }
 
     @Override
     public void onLoadFinished(Loader<List<DayCoursesDto>> loader, List<DayCoursesDto> data) {
         courses = data;
+        if(data == null || data.isEmpty())
+            return;
         Date now = new Date();
         while(dayPosition < data.size() && data.get(dayPosition).getEvents().get(eventPosition).getStartTime().before(now)) {
             moveToNextEvent();

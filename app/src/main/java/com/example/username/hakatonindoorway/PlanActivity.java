@@ -71,7 +71,7 @@ public class PlanActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public Loader<List<DayCoursesDto>> onCreateLoader(int i, Bundle bundle) {
-        return new CourseListLoader(this);
+        return new CourseListLoader(this, false);
     }
 
     @Override

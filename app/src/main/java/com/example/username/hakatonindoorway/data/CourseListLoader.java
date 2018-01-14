@@ -25,19 +25,16 @@ import java.util.Scanner;
 
 public class CourseListLoader extends AsyncTaskLoader<List<DayCoursesDto>> {
     private List<DayCoursesDto> courses;
+    private String url;
 
-    /**
-     * Stores away the application context associated with context.
-     * Since Loaders can be used across multiple activities it's dangerous to
-     * store the context directly; always use {@link #getContext()} to retrieve
-     * the Loader's Context, don't use the constructor argument directly.
-     * The Context returned by {@link #getContext} is safe to use across
-     * Activity instances.
-     *
-     * @param context used to retrieve the application context.
-     */
-    public CourseListLoader(@NonNull Context context) {
+    public CourseListLoader(@NonNull Context context, boolean mock) {
         super(context);
+
+        url = "http://51.15.41.158:8080/api/";
+        if(mock)
+            url += "mock/events/currentPeriod";
+        else
+            url += "usos/events/currentPeriod";
     }
 
     @Override
@@ -53,7 +50,7 @@ public class CourseListLoader extends AsyncTaskLoader<List<DayCoursesDto>> {
                 .setDateFormat("yyyy-MM-dd kk:mm").create();
         HttpURLConnection conn = null;
         try {
-            conn = (HttpURLConnection)new URL("http://51.15.41.158:8080/api/usos/events/currentPeriod").openConnection();
+            conn = (HttpURLConnection)new URL(url).openConnection();
             conn.setRequestProperty("Cookie", CookieManager.getInstance().getCookie("http://51.15.41.158:8080"));
             InputStream is = conn.getInputStream();
             Scanner sc = new Scanner(is);
