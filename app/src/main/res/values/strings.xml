@@ -16,4 +16,10 @@
     <string name="course_info1">Twoje najbliższe zajęcia: %1$s za %2$d minut, sala %3$s.</string>
     <string name="course_info2">Godzina %1$s, %2$s, sala %3$s.</string>
     <string name="guide">Zaczynam prowadzić. Prowadzę. Kończę prowadzić. </string>
+    <string name="user_guide">Będąc w stanie menu, przytrzymując ekran zostanie przedstawiony harmonogram.
+        Zajęcia będą przedstawiane zgodnie z ich kolejnością. W każdej chwili możesz przełączyć się pomiedzy zajęciami,
+        przesuwając palcem w prawo lub w lewo. By doprowadzić Cię do lokalizacji danego wydarzenia, dwukrotnie stuknij
+        w trakcie jego przedstawiania. By wrócić do menu, w dowolnej chwili przesuń palcem w górę.
+        Gdy będą Ci zadawane pytania, na przykład o ewentualne przedstawienie harmonogramu kolejnych dni, odpowiedź twierdząca to jednokrotne stuknięcie w ekran.
+        Przyjemnego użytkowania!</string>
 </resources>
