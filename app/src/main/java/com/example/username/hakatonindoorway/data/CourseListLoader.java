@@ -4,6 +4,8 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.AsyncTaskLoader;
+import android.util.Log;
+import android.webkit.CookieManager;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -51,7 +53,8 @@ public class CourseListLoader extends AsyncTaskLoader<List<DayCoursesDto>> {
                 .setDateFormat("yyyy-MM-dd kk:mm").create();
         HttpURLConnection conn = null;
         try {
-            conn = (HttpURLConnection)new URL("http://51.15.78.247:8080/api/mock/events/currentPeriod").openConnection();
+            conn = (HttpURLConnection)new URL("http://51.15.41.158:8080/api/usos/events/currentPeriod").openConnection();
+            conn.setRequestProperty("Cookie", CookieManager.getInstance().getCookie("http://51.15.41.158:8080"));
             InputStream is = conn.getInputStream();
             Scanner sc = new Scanner(is);
             sc.useDelimiter("\\A");

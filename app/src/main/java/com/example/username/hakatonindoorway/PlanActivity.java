@@ -2,14 +2,9 @@ package com.example.username.hakatonindoorway;
 
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,7 +15,6 @@ import com.example.username.hakatonindoorway.data.CourseListAdapter;
 import com.example.username.hakatonindoorway.data.CourseListLoader;
 import com.example.username.hakatonindoorway.data.DayCoursesDto;
 
-import java.util.Date;
 import java.util.List;
 
 public class PlanActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<DayCoursesDto>> {
@@ -37,6 +31,22 @@ public class PlanActivity extends AppCompatActivity implements LoaderManager.Loa
         ViewPager vpCourses = findViewById(R.id.vpCourses);
         datesAdapter = new CourseDatesAdapter(adapter);
         vpCourses.setAdapter(datesAdapter);
+        vpCourses.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                adapter.setDate(datesAdapter.getItem(position));
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
         setTitle("Twoje zajęcia");
         getSupportLoaderManager().initLoader(0, new Bundle(), this);
