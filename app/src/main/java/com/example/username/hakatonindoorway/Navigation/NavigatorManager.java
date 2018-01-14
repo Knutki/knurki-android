@@ -1,5 +1,6 @@
 package com.example.username.hakatonindoorway.Navigation;
 
+import android.speech.tts.TextToSpeech;
 import android.widget.Toast;
 
 import com.example.username.hakatonindoorway.Navigation.algorithms.Dijkstra;
@@ -12,6 +13,7 @@ import com.indoorway.android.common.sdk.model.IndoorwayPosition;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 
@@ -41,10 +43,20 @@ public class NavigatorManager {
     private Integer currentLocationFloor;
     private Integer destinationLocationFloor;
 
+    private TextToSpeech textToSpeech;
+    private Boolean elevatorInfo = false;
+
 
     public NavigatorManager(LocationListener locationListener, BuildingManager buildingManager){
         this.locationListener = locationListener;
         this.buildingManager = buildingManager;
+
+        textToSpeech = new TextToSpeech(locationListener.mapActivity, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int i) {
+                textToSpeech.setLanguage(Locale.forLanguageTag("PL"));
+            }
+        });
     }
 
     public void navigateTo(String name, BuildingObject type, IndoorwayMap currentMap){
@@ -100,21 +112,39 @@ public class NavigatorManager {
             return;
         }
 
+
+
         IndoorwayPosition lastKnownPosition = locationListener.getLastKnownPosition();
         if (currentTurnings.size() == 0){
             if (lastKnownPosition.getCoordinates().getDistanceTo(currentlyNavigatingTo.getCenterPoint()) < ON_NODE_MARGIN){
-                Toast.makeText(locationListener.mapActivity, "Jesteś u celu", Toast.LENGTH_LONG).show();
+                textToSpeech.speak(
+                        "Jesteś u celu",
+                        TextToSpeech.QUEUE_FLUSH,
+                        null,
+                        "destination"
+                );
                 locationListener.mapActivity.finish();
             }
-            else{
-                Toast.makeText(locationListener.mapActivity, "Pojedź windą na " + destinationLocationFloor, Toast.LENGTH_LONG).show();
+            else if (!elevatorInfo){
+                textToSpeech.speak(
+                        "Pojedź windą na " + destinationLocationFloor,
+                        TextToSpeech.QUEUE_FLUSH,
+                        null,
+                        "destination"
+                );
+                elevatorInfo = true;
             }
         }
         else {
             Turning.Turn turn = currentTurnings.get(0);
             if (turn.getNode().getCoordinates().getDistanceTo(lastKnownPosition.getCoordinates()) < ON_NODE_MARGIN){
                 currentTurnings.remove(turn);
-                Toast.makeText(locationListener.mapActivity, "Skrec w " + turn.turn(), Toast.LENGTH_LONG).show();
+                textToSpeech.speak(
+                        "Skręć w " + turn.turnInPolish(),
+                        TextToSpeech.QUEUE_FLUSH,
+                        null,
+                        "destination"
+                );
             }
         }
     }

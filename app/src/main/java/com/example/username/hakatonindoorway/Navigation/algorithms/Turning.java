@@ -31,6 +31,8 @@ public class Turning {
         public String turn() {
             return this.side.name().toLowerCase();
         }
+
+        public String turnInPolish(){return side.equals(Side.RIGHT) ? "Prawo": "Lewo";}
     }
 
     static private double getTurnDegree(double firstDegree, double secondDegree) {

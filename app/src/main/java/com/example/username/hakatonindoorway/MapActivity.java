@@ -67,7 +67,6 @@ public class MapActivity extends AppCompatActivity implements IndoorwayMapFragme
                     String room = getIntent().getStringExtra(EXTRA_ROOM_NUMBER);
                     navigatorManager.navigateTo(room, BuildingObject.ROOM, indoorwayMap);
                 }
-
                 mapView.setOnMapLoadCompletedListener(null);
             }
         });

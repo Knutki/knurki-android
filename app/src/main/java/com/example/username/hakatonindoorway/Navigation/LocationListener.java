@@ -3,11 +3,9 @@ package com.example.username.hakatonindoorway.Navigation;
 import com.example.username.hakatonindoorway.MapActivity;
 import com.indoorway.android.common.sdk.listeners.generic.Action1;
 import com.indoorway.android.common.sdk.model.IndoorwayPosition;
-import com.indoorway.android.map.sdk.view.MapView;
 
 public class LocationListener implements Action1<IndoorwayPosition> {
     private IndoorwayPosition currentPosition;
-    public MapView mapView;
     public MapActivity mapActivity;
 
     private String buildingUuid;
