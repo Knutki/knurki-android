@@ -35,10 +35,12 @@ public class BuildingManager {
         return null;
     }
 
-    public IndoorwayMap findMap(String name, BuildingObject type){
-        for (int floor=0; floor < floorNumber; floor++){
-            IndoorwayObjectParameters foundObject = findObjectOnFloor(name, type, floor);
-            if (foundObject != null){return floorMap.get(floor);}
+    public IndoorwayMap findMap(IndoorwayObjectParameters navigateToObject){
+        for (int floor = 0; floor < floorNumber; floor++) {
+            IndoorwayObjectParameters foundObject = floorMap.get(floor).objectWithId(navigateToObject.getId());
+            if (foundObject != null) {
+                return floorMap.get(floor);
+            }
         }
         return null;
     }

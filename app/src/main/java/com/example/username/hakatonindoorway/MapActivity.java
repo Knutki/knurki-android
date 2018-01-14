@@ -3,6 +3,7 @@ package com.example.username.hakatonindoorway;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
 import com.example.username.hakatonindoorway.Navigation.BuildingManager;
 import com.example.username.hakatonindoorway.Navigation.BuildingObject;
@@ -42,12 +43,21 @@ public class MapActivity extends AppCompatActivity implements IndoorwayMapFragme
         locationListener = new LocationListener(mapFragment.getMapView(), this);
         navigatorManager = new NavigatorManager(locationListener, buildingManager);
         IndoorwayLocationSdk.instance()
-                .position()
-                .onChange()
-                .register(locationListener);
+            .position()
+            .onChange()
+            .register(locationListener);
+    }
+    
+    public void onLocationReady(){
+        findViewById(R.id.progressBar).setVisibility(View.GONE);
+        navigatorManager.navigateTo("107", BuildingObject.ROOM);
     }
 
-    public void onLocationReady(){
-        navigatorManager.navigateTo("107", BuildingObject.ROOM);
+    public void onMapChanged() {
+        navigatorManager.onMapChanged();
+    }
+
+    public void onLocationUpdate() {
+        navigatorManager.onLocationUpdate();
     }
 }

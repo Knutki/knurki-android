@@ -22,7 +22,7 @@ public class LocationListener implements Action1<IndoorwayPosition> {
     @Override
     public void onAction(IndoorwayPosition position) {
         // store last position as a field
-        if (currentPosition == null && position != null){
+        if (currentPosition == null){
             currentPosition = position;
             buildingUuid = position.getBuildingUuid();
             mapUuid = position.getMapUuid();
@@ -31,14 +31,15 @@ public class LocationListener implements Action1<IndoorwayPosition> {
         }
         currentPosition = position;
 
-        // react for position changes...
-
-        // If you are using map view, you can pass position.
-        // Second argument indicates if you want to auto reload map on position change
-        // for eg. after going to different building level.
-        if (!this.mapView.currentMap().getMapUuid().equals(mapUuid))
+        if (!this.mapView.currentMap().getMapUuid().equals(mapUuid)) {
+            this.mapView.getNavigation().stop();
             this.mapView.load(buildingUuid, mapUuid);
+            mapActivity.onMapChanged();
+        }
+
+        mapActivity.onLocationUpdate();
         mapView.getPosition().setPosition(position, true);
+        mapView.getNavigation().onPositionUpdate();
     }
 
     public IndoorwayPosition getLastKnownPosition(){
