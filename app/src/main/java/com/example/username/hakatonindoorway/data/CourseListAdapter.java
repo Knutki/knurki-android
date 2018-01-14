@@ -70,7 +70,7 @@ public class CourseListAdapter extends RecyclerView.Adapter<CourseListAdapter.Vi
         TextView tvRoomNumber;
         Context context;
 
-        static final DateFormat DATE_FORMAT = new SimpleDateFormat("kk:mm", Locale.US);
+        static final DateFormat DATE_FORMAT = new SimpleDateFormat("HH:mm", Locale.US);
 
         public ViewHolder(View itemView) {
             super(itemView);
