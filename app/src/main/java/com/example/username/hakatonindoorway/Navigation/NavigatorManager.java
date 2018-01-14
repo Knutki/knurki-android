@@ -47,12 +47,12 @@ public class NavigatorManager {
         this.buildingManager = buildingManager;
     }
 
-    public void navigateTo(String name, BuildingObject type){
+    public void navigateTo(String name, BuildingObject type, IndoorwayMap currentMap){
         currentlyNavigatingTo = buildingManager.findObject(name, type);
-        navigateToObject(currentlyNavigatingTo);
+        navigateToObject(currentlyNavigatingTo, currentMap);
     }
 
-    private void navigateToObject(IndoorwayObjectParameters destinationObject){
+    private void navigateToObject(IndoorwayObjectParameters destinationObject, IndoorwayMap currentMap){
         IndoorwayPosition currentLocation = locationListener.getLastKnownPosition();
         IndoorwayMap destinationMap = buildingManager.findMap(destinationObject);
 
@@ -60,18 +60,21 @@ public class NavigatorManager {
         destinationLocationFloor = buildingManager.floorNumber(destinationMap.getMapUuid());
 
         if (currentLocationFloor.equals(destinationLocationFloor))
-            navigateToOnSameFloor(currentLocation.getCoordinates(), destinationObject.getCenterPoint());
+            navigateToOnSameFloor(currentLocation.getCoordinates(), destinationObject.getCenterPoint(), currentMap);
         else {
-            List<IndoorwayObjectParameters> stairs = buildingManager.findObjectsOnFloor(
+            List<IndoorwayObjectParameters> elevator = buildingManager.findObjectsOnFloor(
                     BuildingObject.ELEVATOR, currentLocationFloor
             );
-            navigateToOnSameFloor(currentLocation.getCoordinates(), stairs.get(0).getCenterPoint());
+            navigateToOnSameFloor(
+                    currentLocation.getCoordinates(), elevator.get(0).getCenterPoint(),
+                    currentMap
+            );
         }
     }
 
-    private void navigateToOnSameFloor(Coordinates start, Coordinates end){
-        locationListener.mapView.getNavigation().start(start, end);
-        List<IndoorwayNode> paths = locationListener.mapView.currentMap().getPaths();
+    private void navigateToOnSameFloor(Coordinates start, Coordinates end, IndoorwayMap currentMap){
+        locationListener.mapActivity.startNavigation(start, end);
+        List<IndoorwayNode> paths = currentMap.getPaths();
 
         Map<Long, IndoorwayNode> nodesMap = new HashMap<>();
         for (IndoorwayNode node: paths){
@@ -86,9 +89,9 @@ public class NavigatorManager {
         currentTurnings = Turning.getTurnings(shortestPath);
     }
 
-    public void onMapChanged() {
+    public void onMapChanged(IndoorwayMap currentMap) {
         if (currentlyNavigatingTo != null){
-            navigateToObject(currentlyNavigatingTo);
+            navigateToObject(currentlyNavigatingTo, currentMap);
         }
     }
 

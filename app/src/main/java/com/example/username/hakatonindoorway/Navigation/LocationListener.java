@@ -13,9 +13,8 @@ public class LocationListener implements Action1<IndoorwayPosition> {
     private String buildingUuid;
     private String mapUuid;
 
-    public LocationListener(MapView mapView, MapActivity mapActivity){
+    public LocationListener(MapActivity mapActivity){
         super();
-        this.mapView = mapView;
         this.mapActivity = mapActivity;
     }
 
@@ -26,20 +25,17 @@ public class LocationListener implements Action1<IndoorwayPosition> {
             currentPosition = position;
             buildingUuid = position.getBuildingUuid();
             mapUuid = position.getMapUuid();
-            mapView.load(buildingUuid, mapUuid);
-            mapActivity.onLocationReady();
+            mapActivity.onLocationReady(buildingUuid, mapUuid);
         }
         currentPosition = position;
 
-        if (this.mapView.currentMap() == null || !this.mapView.currentMap().getMapUuid().equals(mapUuid)) {
-            this.mapView.getNavigation().stop();
-            this.mapView.load(buildingUuid, mapUuid);
-            mapActivity.onMapChanged();
+        if (!position.getMapUuid().equals(mapUuid)) {
+            buildingUuid = position.getBuildingUuid();
+            mapUuid = position.getMapUuid();
+            mapActivity.onMapChanged(buildingUuid, mapUuid);
         }
 
-        mapActivity.onLocationUpdate();
-        mapView.getPosition().setPosition(position, true);
-        mapView.getNavigation().onPositionUpdate();
+        mapActivity.onLocationUpdate(position);
     }
 
     public IndoorwayPosition getLastKnownPosition(){
