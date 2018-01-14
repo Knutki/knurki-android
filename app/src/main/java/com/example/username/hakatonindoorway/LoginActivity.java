@@ -2,6 +2,7 @@ package com.example.username.hakatonindoorway;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
@@ -60,8 +61,15 @@ public class LoginActivity extends AppCompatActivity {
         wvLogin.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageFinished(WebView view, String url) {
-                if("http://51.15.41.158:8080/api/usos/user".equals(url))
-                    startActivity(new Intent(LoginActivity.this, MapActivity.class));
+                if("http://51.15.41.158:8080/oauth/done".equals(url)) {
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            startActivity(new Intent(LoginActivity.this, MapActivity.class));
+                        }
+                    }, 1500);
+                }
             }
         });
     }
