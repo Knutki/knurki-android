@@ -1,7 +1,7 @@
 package com.example.username.hakatonindoorway.Navigation;
 
 import android.speech.tts.TextToSpeech;
-import android.widget.Toast;
+import android.speech.tts.UtteranceProgressListener;
 
 import com.example.username.hakatonindoorway.Navigation.algorithms.Dijkstra;
 import com.example.username.hakatonindoorway.Navigation.algorithms.Turning;
@@ -45,6 +45,7 @@ public class NavigatorManager {
 
     private TextToSpeech textToSpeech;
     private Boolean elevatorInfo = false;
+    private IndoorwayObjectParameters currentElevator;
 
 
     public NavigatorManager(LocationListener locationListener, BuildingManager buildingManager){
@@ -60,6 +61,12 @@ public class NavigatorManager {
     }
 
     public void navigateTo(String name, BuildingObject type, IndoorwayMap currentMap){
+        textToSpeech.speak(
+                "Ruszajmy",
+                TextToSpeech.QUEUE_FLUSH,
+                null,
+                "navigation_start"
+        );
         currentlyNavigatingTo = buildingManager.findObject(name, type);
         navigateToObject(currentlyNavigatingTo, currentMap);
     }
@@ -77,6 +84,7 @@ public class NavigatorManager {
             List<IndoorwayObjectParameters> elevator = buildingManager.findObjectsOnFloor(
                     BuildingObject.ELEVATOR, currentLocationFloor
             );
+            currentElevator = elevator.get(0);
             navigateToOnSameFloor(
                     currentLocation.getCoordinates(), elevator.get(0).getCenterPoint(),
                     currentMap
@@ -112,25 +120,34 @@ public class NavigatorManager {
             return;
         }
 
-
-
         IndoorwayPosition lastKnownPosition = locationListener.getLastKnownPosition();
         if (currentTurnings.size() == 0){
             if (lastKnownPosition.getCoordinates().getDistanceTo(currentlyNavigatingTo.getCenterPoint()) < ON_NODE_MARGIN){
+                textToSpeech.setOnUtteranceProgressListener(new UtteranceProgressListener() {
+                    @Override
+                    public void onStart(String s) {}
+
+                    @Override
+                    public void onDone(String s) {
+                        locationListener.mapActivity.finish();
+                    }
+
+                    @Override
+                    public void onError(String s) {}
+                });
                 textToSpeech.speak(
                         "Jesteś u celu",
                         TextToSpeech.QUEUE_FLUSH,
                         null,
                         "destination"
                 );
-                locationListener.mapActivity.finish();
             }
-            else if (!elevatorInfo){
+            else if (!elevatorInfo && lastKnownPosition.getCoordinates().getDistanceTo(currentElevator.getCenterPoint()) < ON_NODE_MARGIN){
                 textToSpeech.speak(
-                        "Pojedź windą na " + destinationLocationFloor,
+                        "Pojedź windą na piętro " + destinationLocationFloor,
                         TextToSpeech.QUEUE_FLUSH,
                         null,
-                        "destination"
+                        "elevator"
                 );
                 elevatorInfo = true;
             }
@@ -143,9 +160,13 @@ public class NavigatorManager {
                         "Skręć w " + turn.turnInPolish(),
                         TextToSpeech.QUEUE_FLUSH,
                         null,
-                        "destination"
+                        "turn"
                 );
             }
         }
+    }
+
+    public void onStop(){
+        textToSpeech.shutdown();
     }
 }

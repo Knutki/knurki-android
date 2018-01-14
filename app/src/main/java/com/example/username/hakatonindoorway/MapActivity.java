@@ -97,4 +97,14 @@ public class MapActivity extends AppCompatActivity implements IndoorwayMapFragme
         mapView.getNavigation().start(start, end);
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        IndoorwayLocationSdk.instance()
+                .position()
+                .onChange()
+                .unregister(locationListener);
+
+        navigatorManager.onStop();
+    }
 }
