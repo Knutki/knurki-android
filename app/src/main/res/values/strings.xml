@@ -1,7 +1,13 @@
 <resources>
     <string name="app_name">HakatonIndoorway</string>
+    <string name="your_plan">Twój plan</string>
     <string name="building_id">CScrSxCVhQg</string>
     <string name="floor_2_id">3-_M01M3r5w</string>
     <string name="floor_1_id">gVI7XXuBFCQ</string>
     <string name="floor_0_id">7-QLYjkafkE</string>
+    <string name="close">Zamknij</string>
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="action_sign_in">Zaloguj przez USOS</string>
 </resources>

@@ -31,7 +31,7 @@ public class LocationListener implements Action1<IndoorwayPosition> {
         }
         currentPosition = position;
 
-        if (!this.mapView.currentMap().getMapUuid().equals(mapUuid)) {
+        if (this.mapView.currentMap() == null || !this.mapView.currentMap().getMapUuid().equals(mapUuid)) {
             this.mapView.getNavigation().stop();
             this.mapView.load(buildingUuid, mapUuid);
             mapActivity.onMapChanged();
