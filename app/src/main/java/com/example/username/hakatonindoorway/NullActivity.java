@@ -9,6 +9,7 @@ import android.support.v4.content.Loader;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -131,7 +132,9 @@ public class NullActivity extends AppCompatActivity implements TextToSpeech.OnIn
                         @Override
                         public void run() {
                             root.setOnClickListener(null);
-                            if(optionSelected && !"nextDay".equals(s))
+                            if(optionSelected)
+                                return;
+                            if("nextDay".equals(s) && state == State.READ_LIST)
                                 return;
                             if("hello".equals(s) || ("nextDay".equals(s) && !optionSelected)) {
                                 setState(State.MENU, false);
@@ -178,6 +181,7 @@ public class NullActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
     private void setState(State state, boolean force) {
+        Log.d("DEBUG", "setState"+state.name());
         int queueMode = TextToSpeech.QUEUE_ADD;
         if(force)
             queueMode = TextToSpeech.QUEUE_FLUSH;
@@ -263,6 +267,7 @@ public class NullActivity extends AppCompatActivity implements TextToSpeech.OnIn
     }
 
     private String formatMessage(CourseDto course) {
+        Log.d("DEBUG", dayPosition+";"+eventPosition);
         String msg = getString(R.string.course_info2, TIME_FORMAT.format(course.getStartTime()),
                 course.getName(), course.getRoom());
         return msg;
