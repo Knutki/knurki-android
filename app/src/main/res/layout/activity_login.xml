@@ -13,7 +13,7 @@
     tools:context="com.example.username.hakatonindoorway.LoginActivity">
 
     <LinearLayout
-        android:id="@+id/llHello"
+        android:id="@+id/llIntro"
         android:layout_gravity="center"
         android:orientation="vertical"
         android:layout_width="match_parent"

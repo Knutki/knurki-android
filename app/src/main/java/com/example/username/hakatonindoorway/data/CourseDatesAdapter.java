@@ -62,17 +62,22 @@ public class CourseDatesAdapter extends PagerAdapter {
         LinearLayoutManager layoutManager = new LinearLayoutManager(ctx);
         rv.setLayoutManager(layoutManager);
         rv.setAdapter(adapter);
-        adapter.setDate(dates.get(position));
         container.addView(rv);
         return rv;
     }
 
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+        RecyclerView rv = (RecyclerView)object;
+        container.removeView(rv);
     }
 
     @Override
     public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
         return view == object;
+    }
+
+    public Date getItem(int position) {
+        return dates.get(position);
     }
 }
