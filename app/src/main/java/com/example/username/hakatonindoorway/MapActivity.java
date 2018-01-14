@@ -1,8 +1,11 @@
 package com.example.username.hakatonindoorway;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.example.username.hakatonindoorway.Navigation.BuildingManager;
@@ -28,11 +31,17 @@ public class MapActivity extends AppCompatActivity implements IndoorwayMapFragme
 
     public MapView mapView;
 
+    private boolean mock = false;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
         IndoorwayMapFragment.Config config = new IndoorwayMapFragment.Config();
+
+        mock = getIntent().getBooleanExtra("mock", false);
+
+        setTitle("Twoje zajęcia");
 
         config.setLocationButtonVisible(false);
         config.setStartPositioningOnResume(true);
@@ -42,6 +51,22 @@ public class MapActivity extends AppCompatActivity implements IndoorwayMapFragme
         IndoorwayMapFragment fragment = IndoorwayMapFragment.newInstance(this, config);
         fragmentTransaction.add(R.id.mapFragment, fragment, IndoorwayMapFragment.class.getSimpleName());
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_plan, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.open_plan) {
+            Intent intent = new Intent(this, PlanActivity.class);
+            intent.putExtra("mock", this.mock);
+            startActivity(intent);
+        }
+        return true;
     }
 
     @Override

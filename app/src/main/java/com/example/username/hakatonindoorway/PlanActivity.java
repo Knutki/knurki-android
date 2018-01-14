@@ -5,6 +5,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -48,7 +49,6 @@ public class PlanActivity extends AppCompatActivity implements LoaderManager.Loa
             }
         });
 
-        setTitle("Twoje zajęcia");
         getSupportLoaderManager().initLoader(0, new Bundle(), this);
     }
 
@@ -60,18 +60,8 @@ public class PlanActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
-            case R.id.close:
-                finish();
-                break;
-        }
-        return true;
-    }
-
-    @Override
     public Loader<List<DayCoursesDto>> onCreateLoader(int i, Bundle bundle) {
-        return new CourseListLoader(this, false);
+        return new CourseListLoader(this, getIntent().getBooleanExtra("mock", false));
     }
 
     @Override
@@ -89,7 +79,8 @@ public class PlanActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     public void closeTab(View planView) {
+        Log.d("chuj", "chuj");
         finish();
-        overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+//        overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
     }
 }

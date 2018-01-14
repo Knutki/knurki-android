@@ -37,6 +37,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
+        <Button
+            android:id="@+id/email_sign_in_button_mock"
+            android:layout_marginTop="20dp"
+            android:onClick="singWithUsosMock"
+            android:layout_gravity="bottom"
+            android:text="@string/action_sign_in_mock"
+            android:textStyle="bold"
+            android:background="#30bced"
+            android:textColor="#353632"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
     </LinearLayout>
 
     <WebView

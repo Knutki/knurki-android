@@ -61,9 +61,15 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 if("http://51.15.41.158:8080/api/usos/user".equals(url))
-                    startActivity(new Intent(LoginActivity.this, PlanActivity.class));
+                    startActivity(new Intent(LoginActivity.this, MapActivity.class));
             }
         });
+    }
+
+    public void singWithUsosMock(View view) {
+        Intent intent = new Intent(LoginActivity.this, MapActivity.class);
+        intent.putExtra("mock", true);
+        startActivity(intent);
     }
 }
 
