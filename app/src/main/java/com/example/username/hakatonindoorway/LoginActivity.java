@@ -9,9 +9,11 @@ import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.accessibility.AccessibilityEvent;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 /**
  * A login screen that offers login via email/password.
@@ -30,6 +32,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private WebView wvLogin;
     private LinearLayout llIntro;
+    private TextView textToSay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,22 +40,37 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         final Handler handler = new Handler();
-        findViewById(R.id.root).setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                if(motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                    handler.postDelayed(startVoiceMode, 2000);
-                } else if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    handler.removeCallbacks(startVoiceMode);
-                }
-                return true;
-            }
-        });
+//        findViewById(R.id.root).setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View view, MotionEvent motionEvent) {
+//                if(motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+//                    handler.postDelayed(startVoiceMode, 2000);
+//                } else if(motionEvent.getAction() == MotionEvent.ACTION_UP) {
+//                    handler.removeCallbacks(startVoiceMode);
+//                }
+//                return true;
+//            }
+//        });
 
-        llIntro = findViewById(R.id.llIntro);
-        wvLogin = findViewById(R.id.wvLogin);
+//        llIntro = findViewById(R.id.llIntro);
+//        wvLogin = findViewById(R.id.wvLogin);
+          textToSay = findViewById(R.id.textToSay);
     }
 
+    public void sayAccesibilityText(View view) {
+//        System.out.println("MADAFAKA");
+        textToSay.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
+//        textToSay.setText("Oho zmieniliśmy");
+        textToSay.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
+    }
+
+    public void repeatCommunicate(View view) {
+        textToSay.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
+    }
+
+    public void nextCommunicate(View view) {
+        textToSay.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
+    }
 
     public void singWithUsos(View view) {
         llIntro.setVisibility(View.GONE);

@@ -20,9 +20,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         IndoorwaySdk.initContext(this);
-        IndoorwaySdk.configure("babd13d7-abf9-4151-a965-3bffa2e0679b");
-
-        CookieHandler.setDefault(new CookieManager());
+        IndoorwaySdk.configure("65c78b42-8d25-445b-9a22-e51d969fca09");
 
         startActivity(new Intent(this, LoginActivity.class));
         finish();

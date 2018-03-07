@@ -18,7 +18,7 @@ public class BuildingManager {
 
     private Context context;
     private Map<Integer, IndoorwayMap> floorMap = new HashMap<>();
-    private Integer floorNumber = 3;
+    private Integer floorNumber = 1;
 
     public BuildingManager(Context context){
         this.context = context;
@@ -83,8 +83,6 @@ public class BuildingManager {
     public String floorId(Integer floorNumber){
         Map<Integer, String> floors = new HashMap<>();
         floors.put(0, context.getString(R.string.floor_0_id));
-        floors.put(1, context.getString(R.string.floor_1_id));
-        floors.put(2, context.getString(R.string.floor_2_id));
         return floors.get(floorNumber);
     }
 
@@ -92,8 +90,6 @@ public class BuildingManager {
     public Integer floorNumber(String floorId){
         Map<String, Integer> floors = new HashMap<>();
         floors.put(context.getString(R.string.floor_0_id), 0);
-        floors.put(context.getString(R.string.floor_1_id), 1);
-        floors.put(context.getString(R.string.floor_2_id), 2);
         return floors.get(floorId);
     }
 }
