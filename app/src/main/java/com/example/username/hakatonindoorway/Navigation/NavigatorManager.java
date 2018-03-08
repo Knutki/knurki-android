@@ -60,29 +60,31 @@ public class NavigatorManager {
         });
     }
 
-    public void navigateTo(String name, BuildingObject type, IndoorwayMap currentMap){
+    public void navigateTo(IndoorwayObjectParameters destinationObject){
         textToSpeech.speak(
                 "Ruszajmy",
                 TextToSpeech.QUEUE_FLUSH,
                 null,
                 "navigation_start"
         );
-        currentlyNavigatingTo = buildingManager.findObject(name, type);
-        navigateToObject(currentlyNavigatingTo, currentMap);
+        currentlyNavigatingTo = destinationObject;
+        navigateToObject(destinationObject);
     }
 
-    private void navigateToObject(IndoorwayObjectParameters destinationObject, IndoorwayMap currentMap){
-        IndoorwayPosition currentLocation = locationListener.getLastKnownPosition();
-        IndoorwayMap destinationMap = buildingManager.findMap(destinationObject);
+    public void navigateToObject(IndoorwayObjectParameters destinationObject){
 
-        currentLocationFloor = buildingManager.floorNumber(currentLocation.getMapUuid());
-        destinationLocationFloor = buildingManager.floorNumber(destinationMap.getMapUuid());
+        IndoorwayPosition currentLocation = locationListener.getLastKnownPosition();
+        IndoorwayMap destinationMap = buildingManager.getMap(destinationObject);
+        IndoorwayMap currentMap = buildingManager.getCurrentMap();
+
+        currentLocationFloor = buildingManager.getFloorNumber(currentMap);
+        destinationLocationFloor = buildingManager.getFloorNumber(destinationMap);
 
         if (currentLocationFloor.equals(destinationLocationFloor))
             navigateToOnSameFloor(currentLocation.getCoordinates(), destinationObject.getCenterPoint(), currentMap);
         else {
-            List<IndoorwayObjectParameters> elevator = buildingManager.findObjectsOnFloor(
-                    BuildingObject.ELEVATOR, currentLocationFloor
+            List<IndoorwayObjectParameters> elevator = buildingManager.findObjects(
+                BuildingObject.ELEVATOR
             );
             currentElevator = elevator.get(0);
             navigateToOnSameFloor(
@@ -109,9 +111,9 @@ public class NavigatorManager {
         currentTurnings = Turning.getTurnings(shortestPath);
     }
 
-    public void onMapChanged(IndoorwayMap currentMap) {
+    public void onMapChanged() {
         if (currentlyNavigatingTo != null){
-            navigateToObject(currentlyNavigatingTo, currentMap);
+            navigateToObject(currentlyNavigatingTo);
         }
     }
 

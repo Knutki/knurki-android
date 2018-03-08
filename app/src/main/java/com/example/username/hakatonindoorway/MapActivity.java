@@ -1,25 +1,37 @@
 package com.example.username.hakatonindoorway;
 
-import android.content.Intent;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 import com.example.username.hakatonindoorway.Navigation.BuildingManager;
+
 import com.example.username.hakatonindoorway.Navigation.BuildingObject;
 import com.example.username.hakatonindoorway.Navigation.LocationListener;
 import com.example.username.hakatonindoorway.Navigation.NavigatorManager;
+import com.indoorway.android.common.sdk.listeners.generic.Action0;
 import com.indoorway.android.common.sdk.listeners.generic.Action1;
 import com.indoorway.android.common.sdk.model.Coordinates;
 import com.indoorway.android.common.sdk.model.IndoorwayMap;
+import com.indoorway.android.common.sdk.model.IndoorwayObjectParameters;
 import com.indoorway.android.common.sdk.model.IndoorwayPosition;
 import com.indoorway.android.fragments.sdk.map.IndoorwayMapFragment;
 import com.indoorway.android.fragments.sdk.map.MapFragment;
 import com.indoorway.android.location.sdk.IndoorwayLocationSdk;
 import com.indoorway.android.map.sdk.view.MapView;
+
+import java.util.List;
 
 
 public class MapActivity extends AppCompatActivity implements IndoorwayMapFragment.OnMapFragmentReadyListener{
@@ -31,17 +43,12 @@ public class MapActivity extends AppCompatActivity implements IndoorwayMapFragme
 
     public MapView mapView;
 
-    private boolean mock = false;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
         IndoorwayMapFragment.Config config = new IndoorwayMapFragment.Config();
-
-        mock = getIntent().getBooleanExtra("mock", false);
-
-        setTitle("Twoje zajęcia");
 
         config.setLocationButtonVisible(false);
         config.setStartPositioningOnResume(true);
@@ -54,27 +61,9 @@ public class MapActivity extends AppCompatActivity implements IndoorwayMapFragme
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_plan, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.open_plan) {
-            Intent intent = new Intent(this, PlanActivity.class);
-            intent.putExtra("mock", this.mock);
-            startActivity(intent);
-        }
-        return true;
-    }
-
-    @Override
     public void onMapFragmentReady(MapFragment mapFragment) {
-        buildingManager = new BuildingManager(this);
-
         mapView = mapFragment.getMapView();
-
+        buildingManager = new BuildingManager();
         locationListener = new LocationListener(this);
         navigatorManager = new NavigatorManager(locationListener, buildingManager);
         IndoorwayLocationSdk.instance()
@@ -83,16 +72,40 @@ public class MapActivity extends AppCompatActivity implements IndoorwayMapFragme
             .register(locationListener);
     }
 
-    public void onLocationReady(String buildingUuid, String mapUuid){
+    public void onLocationReady(final String buildingUuid, String mapUuid){
+        buildingManager.setOnMapReady(new Action0(){
+            @Override
+            public void onAction() {
+                final List<IndoorwayObjectParameters> objects = buildingManager.findObjects(BuildingObject.ROOM);
+                new AlertDialog.Builder(MapActivity.this).setAdapter(
+                        new ArrayAdapter<IndoorwayObjectParameters>(MapActivity.this, android.R.layout.simple_list_item_1, objects) {
+                            @NonNull
+                            @Override
+                            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                                IndoorwayObjectParameters item = getItem(position);
+                                if (convertView == null) {
+                                    convertView = LayoutInflater.from(getContext()).inflate(android.R.layout.simple_list_item_1, parent, false);
+                                }
+                                ((TextView)convertView).setText(item.getName());
+                                return convertView;
+                            }
+                        },
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        navigatorManager.navigateTo(objects.get(i));
+                    }
+                }
+                ).create().show();
+            }
+        });
+        buildingManager.loadMap(buildingUuid, mapUuid);
+
         this.mapView.setOnMapLoadCompletedListener(new Action1<IndoorwayMap>() {
             @Override
-            public void onAction(IndoorwayMap indoorwayMap) {
-                findViewById(R.id.progressBar).setVisibility(View.GONE);
-                if(getIntent() != null && getIntent().hasExtra(EXTRA_ROOM_NUMBER)) {
-                    String room = getIntent().getStringExtra(EXTRA_ROOM_NUMBER);
-                    navigatorManager.navigateTo(room, BuildingObject.ROOM, indoorwayMap);
-                }
-                mapView.setOnMapLoadCompletedListener(null);
+            public void onAction(final IndoorwayMap indoorwayMap) {
+            findViewById(R.id.progressBar).setVisibility(View.GONE);
+            mapView.setOnMapLoadCompletedListener(null);
             }
         });
         this.mapView.load(buildingUuid, mapUuid);
@@ -105,7 +118,8 @@ public class MapActivity extends AppCompatActivity implements IndoorwayMapFragme
         this.mapView.setOnMapLoadCompletedListener(new Action1<IndoorwayMap>() {
             @Override
             public void onAction(IndoorwayMap indoorwayMap) {
-                navigatorManager.onMapChanged(indoorwayMap);
+                buildingManager.onMapChanged(indoorwayMap);
+                navigatorManager.onMapChanged();
                 mapView.setOnMapLoadCompletedListener(null);
             }
         });
