@@ -33,6 +33,8 @@ public class LoginActivity extends AppCompatActivity {
     private WebView wvLogin;
     private LinearLayout llIntro;
     private TextView textToSay;
+    private String[] communicates = new String[] {"Skręć w pierwszy zakręt", "Idź prosto", "Dotarłeś do celu"};
+    private int currIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,9 +60,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void sayAccesibilityText(View view) {
-//        System.out.println("MADAFAKA");
-        textToSay.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
-//        textToSay.setText("Oho zmieniliśmy");
         textToSay.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
     }
 
@@ -69,6 +68,15 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void nextCommunicate(View view) {
+        currIndex = currIndex < communicates.length -1 ? currIndex + 1 : 0;
+        System.out.println(currIndex);
+        textToSay.setText(communicates[currIndex]);
+        textToSay.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
+    }
+
+    public void prevCommunicate(View view) {
+        currIndex = currIndex <= 0 ? communicates.length - 1 : currIndex - 1;
+        textToSay.setText(communicates[currIndex]);
         textToSay.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
     }
 
