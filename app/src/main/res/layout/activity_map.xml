@@ -11,7 +11,8 @@
     <FrameLayout
         android:id="@+id/mapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight=".8"
         android:name="com.indoorway.android.fragments.sdk.map.IndoorwayMapFragment"
         />
 
@@ -21,25 +22,51 @@
         android:layout_height="match_parent"
         android:indeterminate="true"
         />
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-        <ImageButton
-            android:src="@drawable/ic_view_headline"
-            android:padding="8dp"
-            android:background="@android:color/white"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+    <LinearLayout
+        android:id="@+id/llIntro"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight=".2">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/prevInfo"
+                android:text="@string/prev_info"
+                android:textStyle="bold"
+                android:background="#30bced"
+                android:textColor="#353632"
+                android:layout_weight=".5"
+                android:layout_width="0dip"
+                android:layout_height="80dp"
+                android:onClick="prevInfo"
+                android:layout_marginLeft="5dp"/>
+
+            <Button
+                android:id="@+id/repeatInfo"
+                android:text="@string/repeat_info"
+                android:textStyle="bold"
+                android:background="#30bced"
+                android:textColor="#353632"
+                android:layout_weight=".5"
+                android:layout_width="0dip"
+                android:layout_height="80dp"
+                android:onClick="repeatInfo"
+                android:layout_marginRight="5dp"/>
+
+        </LinearLayout>
 
         <TextView
-            android:text="@string/your_plan"
-            android:textColor="@android:color/black"
-            android:layout_marginLeft="8dp"
-            android:textSize="20sp"
-            android:layout_gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:id="@+id/infoText"
+            android:layout_width="1px"
+            android:layout_height="1px"
+            />
+
     </LinearLayout>
 </LinearLayout>

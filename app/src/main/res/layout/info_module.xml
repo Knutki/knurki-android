@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/llIntro"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/textToSay"
+        android:layout_width="1px"
+        android:layout_height="1px"
+        android:text="Witamy!"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/repeat"
+            android:text="powtórz"
+            android:textStyle="bold"
+            android:background="#30bced"
+            android:textColor="#353632"
+            android:layout_weight=".5"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:onClick="repeatCommunicate"/>
+
+        <Button
+            android:id="@+id/prevCommunicate"
+            android:text="poprzedni"
+            android:textStyle="bold"
+            android:background="#30bced"
+            android:textColor="#353632"
+            android:layout_weight=".5"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+
+</LinearLayout>

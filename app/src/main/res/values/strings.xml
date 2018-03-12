@@ -11,6 +11,9 @@
     <string name="action_sign_in">Zaloguj przez USOS</string>
     <string name="action_sign_in_mock">Zaloguj mockując dane</string>
 
+    <string name="repeat_info">Powtórz komunikat</string>
+    <string name="prev_info">poprzedni komunikat</string>
+
     <string name="next_day">Przedstawić plan na następny dzień?</string>
     <string name="menu">Jesteś w menu. Przytrzymaj ekran by usłyszeć swój harmonogram. Przesuń w górę by zapoznać się z obsługą aplikacji.</string>
     <string name="course_info1">Twoje najbliższe zajęcia: %1$s za %2$d minut, sala %3$s.</string>

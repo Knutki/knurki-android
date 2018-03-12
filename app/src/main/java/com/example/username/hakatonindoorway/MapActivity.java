@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.example.username.hakatonindoorway.Information.InformationModule;
 import com.example.username.hakatonindoorway.Navigation.BuildingManager;
 
 import com.example.username.hakatonindoorway.Navigation.BuildingObject;
@@ -38,6 +39,7 @@ public class MapActivity extends AppCompatActivity implements IndoorwayMapFragme
     public LocationListener locationListener;
     public BuildingManager buildingManager;
     public NavigatorManager navigatorManager;
+    private InformationModule infoModule;
 
     public MapView mapView;
 
@@ -56,6 +58,8 @@ public class MapActivity extends AppCompatActivity implements IndoorwayMapFragme
         IndoorwayMapFragment fragment = IndoorwayMapFragment.newInstance(this, config);
         fragmentTransaction.add(R.id.mapFragment, fragment, IndoorwayMapFragment.class.getSimpleName());
         fragmentTransaction.commit();
+
+
     }
 
     @Override
@@ -68,6 +72,7 @@ public class MapActivity extends AppCompatActivity implements IndoorwayMapFragme
             .position()
             .onChange()
             .register(locationListener);
+        infoModule = new InformationModule((TextView)findViewById(R.id.infoText));
     }
 
     public void onLocationReady(final String buildingUuid, String mapUuid){
@@ -134,6 +139,14 @@ public class MapActivity extends AppCompatActivity implements IndoorwayMapFragme
 
     public void startNavigation(Coordinates start, Coordinates end){
         mapView.getNavigation().start(start, end);
+    }
+
+    public void prevInfo(View view) {
+        infoModule.prevInfo();
+    }
+
+    public void repeatInfo(View view) {
+        infoModule.repeatInfo();
     }
 
     @Override
