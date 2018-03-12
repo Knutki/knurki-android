@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
         IndoorwaySdk.initContext(this);
         IndoorwaySdk.configure("65c78b42-8d25-445b-9a22-e51d969fca09");
 
-        Intent intent = new Intent(this, MapActivity.class);
+        Intent intent = new Intent(this, EntryActivity.class);
         intent.putExtra(MapActivity.EXTRA_ROOM_NUMBER, "kuba");
         startActivity(intent);
         finish();
