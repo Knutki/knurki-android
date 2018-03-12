@@ -35,8 +35,6 @@ import java.util.List;
 
 
 public class MapActivity extends AppCompatActivity implements IndoorwayMapFragment.OnMapFragmentReadyListener{
-    public static final String EXTRA_ROOM_NUMBER = "ROOM_NUMBER";
-
     public LocationListener locationListener;
     public BuildingManager buildingManager;
     public NavigatorManager navigatorManager;
@@ -84,7 +82,9 @@ public class MapActivity extends AppCompatActivity implements IndoorwayMapFragme
                             public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
                                 IndoorwayObjectParameters item = getItem(position);
                                 if (convertView == null) {
-                                    convertView = LayoutInflater.from(getContext()).inflate(android.R.layout.simple_list_item_1, parent, false);
+                                    convertView = LayoutInflater
+                                            .from(getContext())
+                                            .inflate(android.R.layout.simple_list_item_1, parent, false);
                                 }
                                 ((TextView)convertView).setText(item.getName());
                                 return convertView;

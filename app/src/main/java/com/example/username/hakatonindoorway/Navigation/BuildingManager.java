@@ -38,8 +38,9 @@ public class BuildingManager {
                 @Override
                 public void onAction(IndoorwayMap indoorwayMap) {
                     Matcher matcher = Pattern.compile("FLOOR:(\\d+)").matcher(indoorwayMap.getMapName());
-                    matcher.find();
-                    Integer floor = Integer.valueOf(matcher.group(1));
+                    Integer floor = 0;
+                    if (matcher.find())
+                        floor = Integer.valueOf(matcher.group(1));
                     floorMap.put(floor, indoorwayMap);
                     currentMap = indoorwayMap;
                     onLoadMapAction.onAction();
